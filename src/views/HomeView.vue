@@ -7,7 +7,7 @@
       </div>
 
     
-      <router-link to="/popis-slastica" class="btn btn-primary mt-4">Idi na popis slastica</router-link>
+      <router-link to="/popis" class="btn btn-primary mt-4">Idi na popis slastica</router-link>
 
      
       <div class="mt-2">

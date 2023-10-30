@@ -50,7 +50,7 @@
         this.registracijaUspjesna = true;
   
         
-        this.$router.push('/');
+        this.$router.push('/login');
       },
     },
   };
