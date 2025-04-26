@@ -1,17 +1,20 @@
 <template>
     <div class="welcome-page">
-      <h1>Dobrodošli u VetDoc</h1>
   
+    
+  
+      <h1>Dobrodošli u VetDoc! :)</h1>
+    
       <!-- Linkovi za navigaciju -->
       <div class="buttons">
         <RouterLink to="/login">
           <button>Prijava korisnika</button>
         </RouterLink>
-  
+    
         <RouterLink to="/admin-login">
           <button>Prijava administratora</button>
         </RouterLink>
-  
+    
         <RouterLink to="/register">
           <button>Registracija</button>
         </RouterLink>
@@ -30,6 +33,8 @@
     margin-top: 50px;
   }
   
+ 
+  /* Stilizacija gumba */
   .buttons {
     margin-top: 20px;
   }
