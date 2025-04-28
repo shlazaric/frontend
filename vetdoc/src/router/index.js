@@ -5,7 +5,7 @@ import UserLoginForm from '@/components/UserLoginForm.vue'
 import AdminLoginForm from '@/components/AdminLoginForm.vue'
 import PetProfileForm from '@/components/PetProfileForm.vue'
 import AppointmentBooking from '@/components/AppointmentBooking.vue'
-import HomePage from '@/components/HomePage.vue' // dodaj ovo!
+import HomePage from '@/components/HomePage.vue'
 
 const routes = [
     { path: '/', component: WelcomePage },
@@ -13,8 +13,8 @@ const routes = [
     { path: '/login', component: UserLoginForm },
     { path: '/admin-login', component: AdminLoginForm },
     { path: '/home', component: HomePage },
-    { path: '/pet-profile', component: PetProfileForm }
-
+    { path: '/pet-profile', component: PetProfileForm },
+    { path: '/appointment-booking', component: AppointmentBooking }
 ]
 
 const router = createRouter({
