@@ -27,8 +27,12 @@
 </template>
 
 <script setup>
-// Uvoz ref funkcije iz Vue-a
+// Uvoz potrebnih funkcija iz Vue-a i vue-routera
 import { ref } from 'vue'
+import { useRouter } from 'vue-router' // Dodano za navigaciju
+
+// Kreiranje router instance
+const router = useRouter()
 
 // Definiranje reaktivnih varijabli
 const email = ref('')
@@ -54,6 +58,7 @@ const validate = () => {
 const handleSubmit = () => {
   if (validate()) {
     alert('Korisnik uspješno prijavljen!')
+    router.push('/home') // Prebacivanje na HomePage
   }
 }
 </script>
