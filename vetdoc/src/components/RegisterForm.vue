@@ -41,6 +41,10 @@
 <script setup>
 // Uvoz Vue funkcija
 import { ref } from 'vue'
+import { useRouter } from 'vue-router' // Dodano za navigaciju
+
+// Kreiranje router instance
+const router = useRouter()
 
 // Definiranje varijabli
 const name = ref('')
@@ -76,6 +80,7 @@ const validate = () => {
 const handleSubmit = () => {
   if (validate()) {
     alert('Registracija uspješna!')
+    router.push('/home') // Preusmjeravanje na HomePage nakon registracije
   }
 }
 </script>
