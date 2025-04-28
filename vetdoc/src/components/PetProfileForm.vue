@@ -12,9 +12,13 @@
   
       <p v-if="errorMessage" style="color: red;">{{ errorMessage }}</p>
       <p v-if="successMessage" style="color: green;">{{ successMessage }}</p>
-  
-      <router-link to="/edit-pet">Uredi profil ljubimca</router-link><br>
-      <router-link to="/book-appointment">Rezerviraj termin kod veterinara</router-link>
+      <router-link to="/pet-profile">
+      <button>Uredi profil ljubimca</button>
+    </router-link>
+    <br />
+    <router-link to="/appointment-booking">
+      <button>Rezerviraj termin kod veterinara</button>
+    </router-link>
     </div>
   </template>
   
@@ -36,7 +40,7 @@
           this.errorMessage = 'Molimo popunite sva polja!';
         } else {
           this.errorMessage = '';
-          this.successMessage = 'Podaci su uspešno sačuvani!';
+          this.successMessage = 'Podaci su uspješno sačuvani!';
           
           // Reset formu
           this.name = '';
