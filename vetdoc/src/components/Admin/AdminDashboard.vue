@@ -1,6 +1,6 @@
 <template>
     <div class="dashboard">
-      <h2>Admin Dashboard</h2>
+      <h2> Dobrodošli! :) </h2>
       <router-link to="/appointments-list">Pregled rezervacija </router-link>
       <router-link to="/pets-list">Pregled ljubimaca</router-link>
     </div>

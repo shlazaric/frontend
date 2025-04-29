@@ -6,17 +6,17 @@
     <form @submit.prevent="handleSubmit">
       <div>
         <label>Email:</label>
-        <input v-model="email" /> <!-- Povezivanje inputa sa 'email' -->
-        <span v-if="errors.email">{{ errors.email }}</span> <!-- Prikaz greške -->
+        <input v-model="email" />
+        <span v-if="errors.email">{{ errors.email }}</span>
       </div>
 
       <div>
         <label>Lozinka:</label>
-        <input type="password" v-model="password" /> <!-- Povezivanje inputa sa 'password' -->
-        <span v-if="errors.password">{{ errors.password }}</span> <!-- Prikaz greške -->
+        <input type="password" v-model="password" />
+        <span v-if="errors.password">{{ errors.password }}</span>
       </div>
 
-      <button type="submit">Prijavi se kao admin</button> <!-- Dugme za slanje forme -->
+      <button type="submit">Prijavi se kao admin</button>
     </form>
 
     <!-- Gumb za povratak na početnu stranicu -->
@@ -27,15 +27,14 @@
 </template>
 
 <script setup>
-// Uvoz ref iz Vue
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
-// Definiranje reaktivnih varijabli
 const email = ref('')
 const password = ref('')
-const errors = ref({}) // Objekt za čuvanje grešaka
+const errors = ref({})
+const router = useRouter()
 
-// Funkcija za provjeru unosa (validaciju)
 const validate = () => {
   errors.value = {}
 
@@ -49,16 +48,15 @@ const validate = () => {
   return Object.keys(errors.value).length === 0
 }
 
-// Funkcija za obradu prijave
 const handleSubmit = () => {
   if (validate()) {
     alert('Administrator uspješno prijavljen!')
+    router.push('/admin-dashboard')  // ⬅ automatski redirekt
   }
 }
 </script>
 
 <style scoped>
-/* Stilizacija forme */
 .form-container {
   max-width: 400px;
   margin: auto;
@@ -88,7 +86,6 @@ button:hover {
   background-color: #2980b9;
 }
 
-/* Stilizacija gumba za povratak */
 .back-button {
   margin-top: 20px;
   display: inline-block;
