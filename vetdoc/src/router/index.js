@@ -9,6 +9,7 @@ import UserLoginForm from '@/components/user/UserLoginForm.vue';
 import HomePage from '@/components/user/HomePage.vue';
 import PetProfileForm from '@/components/user/PetProfileForm.vue';
 import AppointmentBooking from '@/components/user/AppointmentBooking.vue';
+import EditPetProfile from '@/components/user/EditPetProfile.vue';
 
 // Admin components
 import AdminLoginForm from '@/components/admin/AdminLoginForm.vue';
@@ -20,11 +21,12 @@ const routes = [
     { path: '/', component: WelcomePage },
 
     // User routes
-    { path: '/register-form', component: RegisterForm },
-    { path: '/login-form', component: UserLoginForm },
+    { path: '/register', component: RegisterForm },
+    { path: '/login', component: UserLoginForm },
     { path: '/home-page', component: HomePage },
     { path: '/pet-profile', component: PetProfileForm },
-    { path: '/book-appointment', component: AppointmentBooking },
+    { path: '/appointment-booking', component: AppointmentBooking },
+    { path: '/edit-pet', component: EditPetProfile },
 
     // Admin routes
     { path: '/admin-login', component: AdminLoginForm },

@@ -11,6 +11,12 @@
       </div>
 
       <div>
+        <label>Prezime:</label>
+        <input v-model="name" />
+        <span v-if="errors.name">{{ errors.name }}</span>
+      </div>
+
+      <div>
         <label>Email:</label>
         <input v-model="email" />
         <span v-if="errors.email">{{ errors.email }}</span>
@@ -32,7 +38,7 @@
     </form>
 
     <!-- Gumb za povratak na početnu stranicu -->
-    <RouterLink to="/home-page" class="back-button">
+    <RouterLink to="/" class="back-button">
       <button type="button">Natrag</button>
     </RouterLink>
   </div>

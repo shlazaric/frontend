@@ -20,7 +20,7 @@
     </form>
 
     <!-- Gumb za povratak na početnu stranicu -->
-    <RouterLink to="/home-page" class="back-button">
+    <RouterLink to="/" class="back-button">
       <button type="button">Natrag</button>
     </RouterLink>
   </div>
@@ -58,7 +58,7 @@ const validate = () => {
 const handleSubmit = () => {
   if (validate()) {
     alert('Korisnik uspješno prijavljen!')
-    router.push('/home') // Prebacivanje na HomePage
+    router.push('/home-page') // Prebacivanje na HomePage
   }
 }
 </script>
