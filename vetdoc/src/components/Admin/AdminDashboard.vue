@@ -1,14 +1,8 @@
 <template>
     <div class="dashboard">
       <h2>Admin Dashboard</h2>
-  
-      <RouterLink to="/appointments">
-        <button>Pregled termina</button>
-      </RouterLink>
-  
-      <RouterLink to="/pets">
-        <button>Pregled ljubimaca</button>
-      </RouterLink>
+      <router-link to="/appointments-list">Pregled rezervacija </router-link>
+      <router-link to="/pets-list">Pregled ljubimaca</router-link>
     </div>
   </template>
   

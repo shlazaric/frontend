@@ -20,7 +20,7 @@
     </form>
 
     <!-- Gumb za povratak na početnu stranicu -->
-    <RouterLink to="/" class="back-button">
+    <RouterLink to="/home-page" class="back-button">
       <button type="button">Natrag</button>
     </RouterLink>
   </div>
