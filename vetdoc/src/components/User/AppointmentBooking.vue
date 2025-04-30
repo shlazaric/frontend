@@ -43,7 +43,7 @@ export default {
         this.formattedTime = '';
       } else {
         this.errorMessage = '';
-        this.successMessage = 'Termin je uspješno rezervisan!';
+        this.successMessage = 'Termin je uspješno rezerviran!';
 
       
         const dateObj = new Date(this.date);
