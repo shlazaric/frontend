@@ -22,7 +22,7 @@
 
     <!-- Gumb za povratak -->
     <RouterLink to="/admin-dashboard" class="back-button">
-      <button type="button">Natrag na administraciju</button>
+      <button type="button">Natrag</button>
     </RouterLink>
   </div>
 </template>

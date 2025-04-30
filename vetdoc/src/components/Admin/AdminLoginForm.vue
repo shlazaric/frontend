@@ -1,28 +1,28 @@
 <template>
-  <div class="form-container">
-    <h2>Prijava administratora</h2>
+  <div class="login-wrapper">
+    <div class="login-box">
+      <h2>🔐 Prijava administratora</h2>
 
-    <!-- Forma za prijavu administratora -->
-    <form @submit.prevent="handleSubmit">
-      <div>
-        <label>Email:</label>
-        <input v-model="email" />
-        <span v-if="errors.email">{{ errors.email }}</span>
-      </div>
+      <form @submit.prevent="handleSubmit">
+        <div class="input-group">
+          <label>Email:</label>
+          <input v-model="email" type="email" placeholder="Unesite email" />
+          <span v-if="errors.email">{{ errors.email }}</span>
+        </div>
 
-      <div>
-        <label>Lozinka:</label>
-        <input type="password" v-model="password" />
-        <span v-if="errors.password">{{ errors.password }}</span>
-      </div>
+        <div class="input-group">
+          <label>Lozinka:</label>
+          <input v-model="password" type="password" placeholder="Unesite lozinku" />
+          <span v-if="errors.password">{{ errors.password }}</span>
+        </div>
 
-      <button type="submit">Prijavi se kao admin</button>
-    </form>
+        <button type="submit">Prijavi se kao admin</button>
+      </form>
 
-    <!-- Gumb za povratak na početnu stranicu -->
-    <RouterLink to="/" class="back-button">
-      <button type="button">Natrag</button>
-    </RouterLink>
+      <RouterLink to="/" class="back-link">
+        <button type="button">⬅ Natrag</button>
+      </RouterLink>
+    </div>
   </div>
 </template>
 
@@ -41,6 +41,7 @@ const validate = () => {
   if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
     errors.value.email = 'Unesite ispravan email.'
   }
+
   if (!password.value) {
     errors.value.password = 'Unesite lozinku.'
   }
@@ -51,43 +52,78 @@ const validate = () => {
 const handleSubmit = () => {
   if (validate()) {
     alert('Administrator uspješno prijavljen!')
-    router.push('/admin-dashboard')  // ⬅ automatski redirekt
+    router.push('/admin-dashboard')
   }
 }
 </script>
 
 <style scoped>
-.form-container {
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(to right, #f3e5f5, #e1f5fe);
+}
+
+.login-box {
+  background-color: white;
+  padding: 40px 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   max-width: 400px;
-  margin: auto;
+  width: 100%;
+  text-align: center;
+}
+
+h2 {
+  color: #2c3e50;
+  margin-bottom: 25px;
+}
+
+.input-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: bold;
+  color: #34495e;
 }
 
 input {
-  display: block;
   width: 100%;
-  margin-bottom: 5px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
 }
 
 span {
   color: red;
-  font-size: 0.9em;
+  font-size: 0.85em;
 }
 
 button {
-  margin-top: 10px;
-  padding: 10px 20px;
-  background-color: #3498db;
+  width: 100%;
+  padding: 12px;
+  background-color: #2c3e50;
   color: white;
   border: none;
+  border-radius: 10px;
+  font-size: 16px;
   cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s;
 }
 
 button:hover {
-  background-color: #2980b9;
+  background-color: #34495e;
 }
 
-.back-button {
+.back-link {
+  display: block;
   margin-top: 20px;
-  display: inline-block;
 }
 </style>
