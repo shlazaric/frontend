@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-wrapper">
     <div class="dashboard-box">
-      <h2>👋 Dobrodošli, administratoru!</h2>
+      <h2>👋 Dobrodošli !</h2>
 
       <div class="buttons">
         <router-link to="/appointments-list">
