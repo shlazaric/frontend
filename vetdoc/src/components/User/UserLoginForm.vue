@@ -27,6 +27,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import axios from 'axios'
 
 const router = useRouter()
 
@@ -45,15 +46,34 @@ const validate = () => {
   return Object.keys(errors.value).length === 0
 }
 
-const handleSubmit = () => {
+const handleSubmit = async () => {
   if (validate()) {
-    alert('Korisnik uspješno prijavljen!')
-    router.push('/home-page')
+    try {
+      const response = await axios.post('http://localhost:5000/api/auth/login', {
+        email: email.value,
+        password: password.value
+      })
+
+      const { token, user } = response.data
+      localStorage.setItem('token', token)
+      localStorage.setItem('user', JSON.stringify(user))
+
+      alert('Prijava uspješna!')
+      router.push('/home-page')
+    } catch (err) {
+      console.error(err)
+      if (err.response && err.response.data.message) {
+        alert(err.response.data.message)
+      } else {
+        alert('Greška prilikom prijave.')
+      }
+    }
   }
 }
 </script>
 
 <style scoped>
+/* stilovi ostaju isti */
 .login-page {
   display: flex;
   justify-content: center;

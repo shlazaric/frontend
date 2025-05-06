@@ -42,6 +42,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import axios from 'axios'
 
 const router = useRouter()
 
@@ -64,10 +65,28 @@ const validate = () => {
   return Object.keys(errors.value).length === 0
 }
 
-const handleSubmit = () => {
+const handleSubmit = async () => {
   if (validate()) {
-    alert('Registracija uspješna!')
-    router.push('/home-page')
+    try {
+      const fullName = `${firstName.value} ${lastName.value}`
+
+      await axios.post('http://localhost:5000/api/auth/register', {
+        name: fullName,
+        email: email.value,
+        password: password.value,
+        role: 'user'
+      })
+
+      alert('Registracija uspješna!')
+      router.push('/home-page')
+    } catch (err) {
+      console.error(err)
+      if (err.response && err.response.data.message) {
+        alert(err.response.data.message)
+      } else {
+        alert('Greška prilikom registracije.')
+      }
+    }
   }
 }
 </script>
@@ -160,4 +179,3 @@ span {
   background-color: #95a5a6;
 }
 </style>
-
