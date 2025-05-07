@@ -32,6 +32,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   data() {
     return {
@@ -40,23 +42,42 @@ export default {
       age: '',
       errorMessage: '',
       successMessage: ''
-    };
+    }
   },
   methods: {
-    submitPetProfile() {
+    async submitPetProfile() {
       if (!this.name || !this.species || !this.age) {
-        this.successMessage = '';
-        this.errorMessage = 'Molimo popunite sva polja!';
-      } else {
-        this.errorMessage = '';
-        this.successMessage = 'Podaci su uspješno sačuvani!';
+        this.successMessage = ''
+        this.errorMessage = 'Molimo popunite sva polja!'
+        return
+      }
+
+      try {
+        const response = await axios.post('http://localhost:3000/api/pets', {
+          name: this.name,
+          species: this.species,
+          age: this.age
+        })
+
+        if (response.status === 201 || response.status === 200) {
+          this.errorMessage = ''
+          this.successMessage = 'Podaci su uspješno sačuvani!'
+          this.name = ''
+          this.species = ''
+          this.age = ''
+        }
+      } catch (error) {
+        console.error(error)
+        this.successMessage = ''
+        this.errorMessage = 'Greška prilikom slanja podataka.'
       }
     }
   }
-};
+}
 </script>
 
 <style scoped>
+
 .pet-profile {
   display: flex;
   justify-content: center;

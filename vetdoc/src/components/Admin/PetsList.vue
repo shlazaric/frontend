@@ -2,16 +2,18 @@
   <div class="pets-wrapper">
     <div class="pets-box">
       <h2>🐾 Pregled ljubimaca</h2>
-      
-    
-      <div v-for="pet in pets" :key="pet.id" class="pet-card">
-        <h3>{{ pet.name }}</h3>
-        <p><strong>Vrsta:</strong> {{ pet.species }}</p>
-        <p><strong>Starost:</strong> {{ pet.age }} godina</p>
-        <p><strong>Dokumentacija:</strong> {{ pet.documents }}</p>
+
+      <div v-if="error" class="error-message">{{ error }}</div>
+
+      <div v-else>
+        <div v-for="pet in pets" :key="pet.id" class="pet-card">
+          <h3>{{ pet.name }}</h3>
+          <p><strong>Vrsta:</strong> {{ pet.species }}</p>
+          <p><strong>Starost:</strong> {{ pet.age }} godina</p>
+          <p><strong>Dokumentacija:</strong> {{ pet.documents }}</p>
+        </div>
       </div>
 
-      
       <RouterLink to="/admin-dashboard" class="back-button">
         <button type="button">⬅ Natrag</button>
       </RouterLink>
@@ -20,13 +22,21 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
 
-// Dummy podaci za ljubimce
-const pets = ref([
-  { id: 1, name: 'Max', species: 'Pas', age: 3, documents: 'Cijepljen, čipiran' },
-  { id: 2, name: 'Bella', species: 'Mačka', age: 2, documents: 'Sterilizirana, čipirana' },
-])
+const pets = ref([])
+const error = ref(null)
+
+onMounted(async () => {
+  try {
+    const response = await axios.get('http://localhost:3000/api/pets')
+    pets.value = response.data
+  } catch (err) {
+    error.value = 'Greška pri dohvaćanju ljubimaca.'
+    console.error(err)
+  }
+})
 </script>
 
 <style scoped>
@@ -51,6 +61,13 @@ h2 {
   text-align: center;
   color: #2c3e50;
   margin-bottom: 30px;
+}
+
+.error-message {
+  color: red;
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: bold;
 }
 
 .pet-card {
