@@ -3,8 +3,9 @@
     <div class="appointments-box">
       <h2>📅 Pregled rezervacija termina</h2>
 
-      <!-- Tablica s podacima o terminima -->
-      <table>
+      <div v-if="error" class="error-message">{{ error }}</div>
+
+      <table v-else>
         <thead>
           <tr>
             <th>Ljubimac</th>
@@ -23,7 +24,6 @@
         </tbody>
       </table>
 
-      <!-- Gumb za povratak -->
       <RouterLink to="/admin-dashboard" class="back-button">
         <button type="button">⬅ Natrag</button>
       </RouterLink>
@@ -32,15 +32,12 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
 
-// Dummy podaci
-const appointments = ref([
-  { id: 1, petName: 'Max', vetName: 'Dr. Smith', date: '2025-05-01', time: '10:00' },
-  { id: 2, petName: 'Bella', vetName: 'Dr. Johnson', date: '2025-05-02', time: '14:00' },
-])
+const appointments = ref([])
+const error = ref(null)
 
-// Funkcija za formatiranje datuma
 const formatDate = (dateStr) => {
   const date = new Date(dateStr)
   return new Intl.DateTimeFormat('hr-HR', {
@@ -49,6 +46,16 @@ const formatDate = (dateStr) => {
     year: 'numeric'
   }).format(date)
 }
+
+onMounted(async () => {
+  try {
+    const response = await axios.get('http://localhost:3000/api/appointments')
+    appointments.value = response.data
+  } catch (err) {
+    error.value = 'Greška pri dohvaćanju termina. Provjerite vezu s poslužiteljem.'
+    console.error(err)
+  }
+})
 </script>
 
 <style scoped>
@@ -73,6 +80,13 @@ h2 {
   text-align: center;
   color: #2c3e50;
   margin-bottom: 30px;
+}
+
+.error-message {
+  color: red;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 table {
