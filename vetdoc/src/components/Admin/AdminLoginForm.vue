@@ -29,6 +29,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import axios from 'axios'
 
 const email = ref('')
 const password = ref('')
@@ -49,10 +50,26 @@ const validate = () => {
   return Object.keys(errors.value).length === 0
 }
 
-const handleSubmit = () => {
+const handleSubmit = async () => {
   if (validate()) {
-    alert('Administrator uspješno prijavljen!')
-    router.push('/admin-dashboard')
+    try {
+      const response = await axios.post('http://localhost:5000/api/admin/login', {
+        email: email.value,
+        password: password.value
+      })
+
+     
+      localStorage.setItem('adminToken', response.data.token)
+
+      alert('Administrator uspješno prijavljen!')
+      router.push('/admin-dashboard')
+    } catch (err) {
+      if (err.response?.data?.message) {
+        alert(`Greška: ${err.response.data.message}`)
+      } else {
+        alert('Greška pri povezivanju sa serverom.')
+      }
+    }
   }
 }
 </script>

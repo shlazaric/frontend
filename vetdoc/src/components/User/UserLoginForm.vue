@@ -73,7 +73,7 @@ const handleSubmit = async () => {
 </script>
 
 <style scoped>
-/* stilovi ostaju isti */
+
 .login-page {
   display: flex;
   justify-content: center;
