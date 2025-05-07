@@ -11,6 +11,9 @@
         <button type="submit" class="main-btn">💾 Spremi promjene</button>
       </form>
 
+      <p v-if="errorMessage" class="error-msg">{{ errorMessage }}</p>
+      <p v-if="successMessage" class="success-msg">{{ successMessage }}</p>
+
       <router-link to="/pet-profile">
         <button class="nav-btn">🔙 Natrag</button>
       </router-link>
@@ -19,27 +22,53 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   data() {
     return {
+      id: null,
       name: '',
       species: '',
-      age: ''
-    };
+      age: '',
+      errorMessage: '',
+      successMessage: ''
+    }
   },
   mounted() {
-    // Učitavanje postojećih podataka iz query parametara
-    this.name = this.$route.query.name || '';
-    this.species = this.$route.query.species || '';
-    this.age = this.$route.query.age || '';
+   
+    this.id = this.$route.query.id
+    this.name = this.$route.query.name || ''
+    this.species = this.$route.query.species || ''
+    this.age = this.$route.query.age || ''
   },
   methods: {
-    updateProfile() {
-      alert('Promjene su spremljene!');
-      // Kasnije ćeš ovdje dodati backend poziv
+    async updateProfile() {
+      if (!this.name || !this.species || !this.age) {
+        this.successMessage = ''
+        this.errorMessage = 'Molimo popunite sva polja!'
+        return
+      }
+
+      try {
+        const response = await axios.put(`http://localhost:3000/api/pets/${this.id}`, {
+          name: this.name,
+          species: this.species,
+          age: this.age
+        })
+
+        if (response.status === 200) {
+          this.errorMessage = ''
+          this.successMessage = 'Podaci su uspješno ažurirani!'
+        }
+      } catch (error) {
+        console.error(error)
+        this.successMessage = ''
+        this.errorMessage = 'Došlo je do greške prilikom ažuriranja.'
+      }
     }
   }
-};
+}
 </script>
 
 <style scoped>
@@ -103,5 +132,15 @@ input {
 
 .nav-btn:hover {
   background-color: #1976d2;
+}
+
+.error-msg {
+  color: red;
+  margin-top: 10px;
+}
+
+.success-msg {
+  color: green;
+  margin-top: 10px;
 }
 </style>
