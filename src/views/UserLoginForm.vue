@@ -12,17 +12,21 @@
     </form>
     
     <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+
+    <button class="back-button" @click="goBack">Natrag</button>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const email = ref('')
 const password = ref('')
 const errorMessage = ref('')
 
-// Validacija e-maila
+const router = useRouter()
+
 function isValidEmail(emailStr) {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   return re.test(emailStr)
@@ -46,6 +50,10 @@ function handleSubmit() {
 
   errorMessage.value = ''
   alert(`Prijava uspješna za ${email.value}`)
+}
+
+function goBack() {
+  router.push('/')
 }
 </script>
 
@@ -73,6 +81,11 @@ button {
 }
 button:hover {
   background-color: #2980b9;
+}
+.back-button {
+  margin-top: 10px;
+  background-color: #ccc;
+  color: black;
 }
 .error {
   color: red;

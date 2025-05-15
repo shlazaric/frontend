@@ -10,16 +10,22 @@
 
       <button type="submit">Prijavi se</button>
     </form>
+
     <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+
+  
+    <button class="back-button" @click="goBack">Natrag</button>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const email = ref('')
 const password = ref('')
 const errorMessage = ref('')
+const router = useRouter()
 
 function isValidEmail(emailStr) {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -39,6 +45,10 @@ function handleSubmit() {
 
   errorMessage.value = ''
   alert(`Administrator prijavljen: ${email.value}`)
+}
+
+function goBack() {
+  router.push('/')
 }
 </script>
 
@@ -66,6 +76,11 @@ button {
 }
 button:hover {
   background-color: #159e85;
+}
+.back-button {
+  background-color: #ccc;
+  color: #000;
+  margin-top: 10px;
 }
 .error {
   color: red;
