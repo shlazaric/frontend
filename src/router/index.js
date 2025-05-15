@@ -5,6 +5,7 @@ import WelcomePage from '@/views/WelcomePage.vue'
 import RegisterForm from '@/views/User/RegisterForm.vue'
 import UserLoginForm from '@/views/User/UserLoginForm.vue'
 import PetForm from '@/views/User/PetProfileForm.vue'
+import AppointmentBooking from '@/views/User/AppointmentBooking.vue'
 
 // Admin views
 import AdminLoginForm from '@/views/Admin/AdminLoginForm.vue'
@@ -15,6 +16,7 @@ const routes = [
   { path: '/login', name: 'Login', component: UserLoginForm },
   { path: '/pet-profile', name: 'PetProfileForm', component: PetForm },
   { path: '/admin-login', name: 'AdminLogin', component: AdminLoginForm },
+  { path: '/book-appointment', name: 'AppointmentBooking', component: AppointmentBooking }
 ]
 
 const router = createRouter({
