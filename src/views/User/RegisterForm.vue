@@ -22,7 +22,6 @@
 
     <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
 
- 
     <button class="back-button" @click="goBack">Natrag</button>
   </div>
 </template>
@@ -68,6 +67,9 @@ function handleSubmit() {
 
   errorMessage.value = ''
   alert(`Registracija uspješna za ${firstName.value} ${lastName.value}`)
+
+ 
+  router.push('/home')
 }
 
 function goBack() {

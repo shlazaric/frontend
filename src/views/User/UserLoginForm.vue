@@ -1,4 +1,4 @@
-<template>
+<template> 
   <div class="form-container">
     <h2>Prijava korisnika</h2>
     <form @submit.prevent="handleSubmit">
@@ -50,6 +50,9 @@ function handleSubmit() {
 
   errorMessage.value = ''
   alert(`Prijava uspješna za ${email.value}`)
+
+  
+  router.push('/home')
 }
 
 function goBack() {
