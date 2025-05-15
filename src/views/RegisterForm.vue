@@ -4,40 +4,64 @@
     <form @submit.prevent="handleSubmit">
       <label>Unesi ime:</label>
       <input type="text" v-model="firstName" required />
-
+      
       <label>Unesi prezime:</label>
       <input type="text" v-model="lastName" required />
-
+      
       <label>Unesi e-mail:</label>
       <input type="email" v-model="email" required />
-
+      
       <label>Unesi lozinku:</label>
       <input type="password" v-model="password" required />
-
+      
       <label>Ponovi lozinku:</label>
       <input type="password" v-model="passwordConfirm" required />
-
+      
       <button type="submit">Registriraj se</button>
     </form>
+    <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref } from 'vue'
 
-const firstName = ref('');
-const lastName = ref('');
-const email = ref('');
-const password = ref('');
-const passwordConfirm = ref('');
+const firstName = ref('')
+const lastName = ref('')
+const email = ref('')
+const password = ref('')
+const passwordConfirm = ref('')
+const errorMessage = ref('')
+
+function isValidEmail(emailStr) {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return re.test(emailStr)
+}
 
 function handleSubmit() {
-  if(password.value !== passwordConfirm.value) {
-    alert('Lozinke se ne poklapaju!');
-    return;
+  // Validacije
+  if (!firstName.value || !lastName.value || !email.value || !password.value || !passwordConfirm.value) {
+    errorMessage.value = 'Sva polja su obavezna.'
+    return
   }
-  
-  alert(`Registracija uspješna za ${firstName.value} ${lastName.value}`);
+
+  if (!isValidEmail(email.value)) {
+    errorMessage.value = 'Unesite ispravan e-mail.'
+    return
+  }
+
+  if (password.value.length < 6) {
+    errorMessage.value = 'Lozinka mora imati najmanje 6 znakova.'
+    return
+  }
+
+  if (password.value !== passwordConfirm.value) {
+    errorMessage.value = 'Lozinke se ne poklapaju.'
+    return
+  }
+
+  errorMessage.value = ''
+  alert(`Registracija uspješna za ${firstName.value} ${lastName.value}`)
 }
 </script>
 
@@ -65,5 +89,9 @@ button {
 }
 button:hover {
   background-color: #2980b9;
+}
+.error {
+  color: red;
+  margin-top: 10px;
 }
 </style>

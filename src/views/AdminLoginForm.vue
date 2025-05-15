@@ -10,22 +10,35 @@
 
       <button type="submit">Prijavi se</button>
     </form>
+    <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref } from 'vue'
 
-const email = ref('');
-const password = ref('');
+const email = ref('')
+const password = ref('')
+const errorMessage = ref('')
+
+function isValidEmail(emailStr) {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return re.test(emailStr)
+}
 
 function handleSubmit() {
   if (!email.value || !password.value) {
-    alert('Molimo popunite oba polja!');
-    return;
+    errorMessage.value = 'Molimo popunite oba polja.'
+    return
   }
-  alert(`Administrator prijavljen: ${email.value}`);
-  
+
+  if (!isValidEmail(email.value)) {
+    errorMessage.value = 'Unesite ispravan e-mail.'
+    return
+  }
+
+  errorMessage.value = ''
+  alert(`Administrator prijavljen: ${email.value}`)
 }
 </script>
 
@@ -53,5 +66,9 @@ button {
 }
 button:hover {
   background-color: #159e85;
+}
+.error {
+  color: red;
+  margin-top: 10px;
 }
 </style>
