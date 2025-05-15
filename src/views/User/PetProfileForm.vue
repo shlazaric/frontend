@@ -4,16 +4,18 @@
 
     <form @submit.prevent="submitPetProfile">
       <label>Unesi ime ljubimca:</label>
-      <input type="text" v-model="name" required />
+      <input type="text" v-model="name" required>
 
       <label>Unesi vrstu ljubimca:</label>
-      <input type="text" v-model="type" required />
+      <input type="text" v-model="type" required>
 
       <label>Unesi starost ljubimca:</label>
-      <input type="number" v-model="age" required />
+      <input type="number" v-model.number="age" required min="0">
 
       <button type="submit">Dodaj podatke o ljubimcu</button>
     </form>
+
+    <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
 
     <div class="links">
       <RouterLink to="/edit-pet">Uredi profil ljubimca</RouterLink>
@@ -24,14 +26,27 @@
 
 <script setup>
 import { ref } from 'vue'
+import { RouterLink } from 'vue-router'
 
 const name = ref('')
 const type = ref('')
-const age = ref('')
+const age = ref(null)
+const errorMessage = ref('')
 
 function submitPetProfile() {
+  if (!name.value || !type.value || age.value === null || age.value === '') {
+    errorMessage.value = 'Molimo popunite sva polja.'
+    return
+  }
+
+  if (age.value < 0) {
+    errorMessage.value = 'Starost ljubimca ne može biti negativna.'
+    return
+  }
+
+  errorMessage.value = ''
   console.log('Podaci ljubimca:', name.value, type.value, age.value)
-  
+  alert(`Profil ljubimca ${name.value} uspješno dodan!`)
 }
 </script>
 
@@ -45,8 +60,6 @@ input {
   display: block;
   margin: 10px auto;
   padding: 8px;
-  width: 200px;
-  box-sizing: border-box;
 }
 
 button {
@@ -57,8 +70,9 @@ button {
   border: none;
   cursor: pointer;
 }
+
 button:hover {
-  background-color: #45a049;
+  background-color: #388e3c;
 }
 
 .links {
@@ -69,7 +83,11 @@ button:hover {
   display: block;
   margin-top: 10px;
   color: #2196F3;
-  cursor: pointer;
-  text-decoration: underline;
+  text-decoration: none;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
 }
 </style>
