@@ -7,6 +7,7 @@ import UserLoginForm from '@/views/User/UserLoginForm.vue'
 import PetForm from '@/views/User/PetProfileForm.vue'
 import AppointmentBooking from '@/views/User/AppointmentBooking.vue'
 import Home from '@/views/User/HomePage.vue'
+import EditPetProfile from '@/views/User/EditPetProfile.vue'
 
 // Admin views
 import AdminLoginForm from '@/views/Admin/AdminLoginForm.vue'
@@ -18,7 +19,8 @@ const routes = [
   { path: '/home', name: 'Home', component: Home },
   { path: '/pet-profile', name: 'PetProfileForm', component: PetForm },
   { path: '/book-appointment', name: 'AppointmentBooking', component: AppointmentBooking },
-  { path: '/admin-login', name: 'AdminLogin', component: AdminLoginForm }
+  { path: '/admin-login', name: 'AdminLogin', component: AdminLoginForm },
+  { path: '/edit-pet', name: 'EditPetProfile', component: EditPetProfile }
 ]
 
 const router = createRouter({

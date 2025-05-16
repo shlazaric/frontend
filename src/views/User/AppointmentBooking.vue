@@ -13,15 +13,21 @@
     </form>
 
     <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+
+    
+    <button class="back-button" @click="goBack">Natrag</button>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const date = ref('')
 const time = ref('')
 const errorMessage = ref('')
+
+const router = useRouter()
 
 function submitAppointment() {
   if (!date.value || !time.value) {
@@ -38,8 +44,11 @@ function submitAppointment() {
   }
 
   errorMessage.value = ''
-  console.log('Termin:', date.value, time.value)
   alert(`Termin rezerviran za ${date.value} u ${time.value}`)
+}
+
+function goBack() {
+  router.back()
 }
 </script>
 
@@ -66,6 +75,12 @@ button {
 
 button:hover {
   background-color: #388e3c;
+}
+
+.back-button {
+  background-color: #ccc;
+  color: black;
+  margin-top: 10px;
 }
 
 .error {

@@ -1,65 +1,76 @@
 <template>
-  <div class="pet-profile">
+  <div>
     <h2>Profil ljubimca</h2>
 
     <form @submit.prevent="submitPetProfile">
-      <label>Unesi ime ljubimca:</label>
-      <input type="text" v-model="name" required>
+      <input v-model="name" type="text" placeholder="Unesi ime ljubimca" />
+      <input v-model="species" type="text" placeholder="Unesi vrstu ljubimca" />
+      <input v-model="age" type="number" placeholder="Unesi starost ljubimca" />
 
-      <label>Unesi vrstu ljubimca:</label>
-      <input type="text" v-model="type" required>
-
-      <label>Unesi starost ljubimca:</label>
-      <input type="number" v-model.number="age" required min="0">
-
-      <button type="submit">Dodaj podatke o ljubimcu</button>
+      <button type="submit">Spremi podatke o ljubimcu</button>
     </form>
 
-    <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+    <p v-if="errorMessage" style="color: red;">{{ errorMessage }}</p>
+    <p v-if="successMessage" style="color: green;">{{ successMessage }}</p>
 
-    <div class="links">
-      <RouterLink to="/edit-pet">Uredi profil ljubimca</RouterLink>
-      <RouterLink to="/book-appointment">Rezerviraj termin kod veterinara</RouterLink>
-    </div>
+    
+    <router-link to="/book-appointment">
+      <button>Rezerviraj termin kod veterinara</button>
+    </router-link>
+
+    <button class="back-button" @click="goHome">Natrag na početnu</button>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { RouterLink } from 'vue-router'
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 
 const name = ref('')
-const type = ref('')
-const age = ref(null)
+const species = ref('')
+const age = ref('')
 const errorMessage = ref('')
+const successMessage = ref('')
+const router = useRouter()
+
+onMounted(() => {
+  const savedProfile = JSON.parse(localStorage.getItem('petProfile'))
+  if (savedProfile) {
+    name.value = savedProfile.name
+    species.value = savedProfile.species
+    age.value = savedProfile.age
+  }
+})
 
 function submitPetProfile() {
-  if (!name.value || !type.value || age.value === null || age.value === '') {
-    errorMessage.value = 'Molimo popunite sva polja.'
-    return
-  }
-
-  if (age.value < 0) {
-    errorMessage.value = 'Starost ljubimca ne može biti negativna.'
+  if (!name.value || !species.value || !age.value) {
+    successMessage.value = ''
+    errorMessage.value = 'Molimo popunite sva polja!'
     return
   }
 
   errorMessage.value = ''
-  console.log('Podaci ljubimca:', name.value, type.value, age.value)
-  alert(`Profil ljubimca ${name.value} uspješno dodan!`)
+  successMessage.value = 'Podaci su uspješno sačuvani!'
+
+  const petProfile = {
+    name: name.value,
+    species: species.value,
+    age: age.value
+  }
+  localStorage.setItem('petProfile', JSON.stringify(petProfile))
+}
+
+function goHome() {
+  router.push('/home')
 }
 </script>
 
 <style scoped>
-.pet-profile {
-  text-align: center;
-  margin-top: 30px;
-}
-
 input {
   display: block;
   margin: 10px auto;
   padding: 8px;
+  width: 80%;
 }
 
 button {
@@ -75,19 +86,9 @@ button:hover {
   background-color: #388e3c;
 }
 
-.links {
-  margin-top: 20px;
-}
-
-.links a {
-  display: block;
-  margin-top: 10px;
-  color: #2196F3;
-  text-decoration: none;
-}
-
-.error {
-  color: red;
-  margin-top: 10px;
+.back-button {
+  margin-top: 15px;
+  background-color: #ccc;
+  color: black;
 }
 </style>

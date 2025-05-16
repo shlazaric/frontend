@@ -7,7 +7,7 @@
         <button>Dodaj ljubimca</button>
       </router-link>
 
-      <router-link to="/appointment-booking">
+      <router-link to="/book-appointment">
         <button>Rezerviraj termin</button>
       </router-link>
     </div>
