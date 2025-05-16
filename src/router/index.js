@@ -11,6 +11,7 @@ import EditPetProfile from '@/views/User/EditPetProfile.vue'
 
 // Admin views
 import AdminLoginForm from '@/views/Admin/AdminLoginForm.vue'
+import AdminDashboard from '@/views/Admin/AdminDashboard.vue'
 
 const routes = [
   { path: '/', name: 'Welcome', component: WelcomePage },
@@ -20,7 +21,8 @@ const routes = [
   { path: '/pet-profile', name: 'PetProfileForm', component: PetForm },
   { path: '/book-appointment', name: 'AppointmentBooking', component: AppointmentBooking },
   { path: '/admin-login', name: 'AdminLogin', component: AdminLoginForm },
-  { path: '/edit-pet', name: 'EditPetProfile', component: EditPetProfile }
+  { path: '/edit-pet', name: 'EditPetProfile', component: EditPetProfile },
+  { path: '/admin-dashboard', name: 'AdminDashboard', component: AdminDashboard }
 ]
 
 const router = createRouter({

@@ -13,7 +13,6 @@
 
     <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
 
-  
     <button class="back-button" @click="goBack">Natrag</button>
   </div>
 </template>
@@ -45,6 +44,9 @@ function handleSubmit() {
 
   errorMessage.value = ''
   alert(`Administrator prijavljen: ${email.value}`)
+  
+  
+  router.push('/admin-dashboard')
 }
 
 function goBack() {
