@@ -4,7 +4,7 @@
       <h2>👋 Dobrodošli, administratoru!</h2>
 
       <div class="buttons">
-        <router-link to="/appointments-list">
+        <router-link to="/appointment-list">
           <button class="dashboard-btn">📅 Pregled rezervacija</button>
         </router-link>
 

@@ -9,9 +9,11 @@ import AppointmentBooking from '@/views/User/AppointmentBooking.vue'
 import Home from '@/views/User/HomePage.vue'
 import EditPetProfile from '@/views/User/EditPetProfile.vue'
 
+
 // Admin views
 import AdminLoginForm from '@/views/Admin/AdminLoginForm.vue'
 import AdminDashboard from '@/views/Admin/AdminDashboard.vue'
+import AppointmentList from '@/views/Admin/AppointmentList.vue'
 
 const routes = [
   { path: '/', name: 'Welcome', component: WelcomePage },
@@ -22,7 +24,8 @@ const routes = [
   { path: '/book-appointment', name: 'AppointmentBooking', component: AppointmentBooking },
   { path: '/admin-login', name: 'AdminLogin', component: AdminLoginForm },
   { path: '/edit-pet', name: 'EditPetProfile', component: EditPetProfile },
-  { path: '/admin-dashboard', name: 'AdminDashboard', component: AdminDashboard }
+  { path: '/admin-dashboard', name: 'AdminDashboard', component: AdminDashboard },
+  { path: '/appointment-list', name: 'AppointmentList', component: AppointmentList }
 ]
 
 const router = createRouter({
