@@ -1,19 +1,28 @@
 <template>
-  <div class="form-container">
-    <h2>Prijava administratora</h2>
-    <form @submit.prevent="handleSubmit">
-      <label>Unesi e-mail:</label>
-      <input type="email" v-model="email" required />
+  <div class="login-wrapper">
+    <div class="login-box">
+      <h2>🔐 Prijava administratora</h2>
 
-      <label>Unesi lozinku:</label>
-      <input type="password" v-model="password" required />
+      <form @submit.prevent="handleSubmit">
+        <div class="input-group">
+          <label for="email">Email:</label>
+          <input id="email" v-model="email" type="email" placeholder="Unesite email" />
+          <span v-if="errors.email">{{ errors.email }}</span>
+        </div>
 
-      <button type="submit">Prijavi se</button>
-    </form>
+        <div class="input-group">
+          <label for="password">Lozinka:</label>
+          <input id="password" v-model="password" type="password" placeholder="Unesite lozinku" />
+          <span v-if="errors.password">{{ errors.password }}</span>
+        </div>
 
-    <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+        <button type="submit" class="main-btn">Prijavi se kao admin</button>
+      </form>
 
-    <button class="back-button" @click="goBack">Natrag</button>
+      <RouterLink to="/" class="back-link">
+        <button type="button" class="nav-btn">⬅ Natrag</button>
+      </RouterLink>
+    </div>
   </div>
 </template>
 
@@ -23,69 +32,116 @@ import { useRouter } from 'vue-router'
 
 const email = ref('')
 const password = ref('')
-const errorMessage = ref('')
+const errors = ref({})
 const router = useRouter()
 
-function isValidEmail(emailStr) {
-  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  return re.test(emailStr)
-}
+const validate = () => {
+  errors.value = {}
 
-function handleSubmit() {
-  if (!email.value || !password.value) {
-    errorMessage.value = 'Molimo popunite oba polja.'
-    return
+  if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
+    errors.value.email = 'Unesite ispravan email.'
   }
 
-  if (!isValidEmail(email.value)) {
-    errorMessage.value = 'Unesite ispravan e-mail.'
-    return
+  if (!password.value) {
+    errors.value.password = 'Unesite lozinku.'
   }
 
-  errorMessage.value = ''
-  alert(`Administrator prijavljen: ${email.value}`)
-  
-  
-  router.push('/admin-dashboard')
+  return Object.keys(errors.value).length === 0
 }
 
-function goBack() {
-  router.push('/')
+const handleSubmit = () => {
+  if (validate()) {
+    alert('Administrator uspješno prijavljen!')
+    router.push('/admin-dashboard')
+  }
 }
 </script>
 
 <style scoped>
-.form-container {
-  padding: 20px;
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(to right, #f3e5f5, #e1f5fe);
 }
+
+.login-box {
+  background-color: white;
+  padding: 40px 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+
+h2 {
+  color: #2c3e50;
+  margin-bottom: 25px;
+}
+
+.input-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
 label {
   display: block;
-  margin-top: 10px;
-  color: #1d006b;
+  margin-bottom: 6px;
+  font-weight: bold;
+  color: #34495e;
 }
+
 input {
   width: 100%;
-  padding: 5px;
-  box-sizing: border-box;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
 }
-button {
-  margin-top: 15px;
-  background-color: #1abc9c;
-  color: white;
-  padding: 8px 12px;
-  border: none;
-  cursor: pointer;
-}
-button:hover {
-  background-color: #159e85;
-}
-.back-button {
-  background-color: #ccc;
-  color: #000;
-  margin-top: 10px;
-}
-.error {
+
+span {
   color: red;
+  font-size: 0.85em;
+  margin-top: 4px;
+  display: block;
+}
+
+.main-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #2c3e50;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
   margin-top: 10px;
+  transition: background-color 0.3s;
+}
+
+.main-btn:hover {
+  background-color: #34495e;
+}
+
+.nav-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s;
+}
+
+.nav-btn:hover {
+  background-color: #1976d2;
+}
+
+.back-link {
+  display: block;
 }
 </style>

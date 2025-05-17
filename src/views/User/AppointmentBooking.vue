@@ -1,90 +1,136 @@
 <template>
   <div class="appointment-booking">
-    <h2>Rezervacija termina</h2>
+    <div class="content-box">
+      <h2>📅 Rezervacija termina</h2>
 
-    <form @submit.prevent="submitAppointment">
-      <label>Unesi datum:</label>
-      <input type="date" v-model="date" required>
+      <form @submit.prevent="submitAppointment">
+        <input v-model="date" type="date" />
+        <input v-model="time" type="time" />
 
-      <label>Unesi vrijeme:</label>
-      <input type="time" v-model="time" required>
+        <button type="submit" class="main-btn">✅ Potvrdi</button>
+      </form>
 
-      <button type="submit">Potvrdi</button>
-    </form>
+      <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
 
-    <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+      <div v-if="successMessage" class="success-message">
+        {{ successMessage }}<br />
+        <strong>Datum:</strong> {{ formattedDate }}<br />
+        <strong>Vrijeme:</strong> {{ formattedTime }}
+      </div>
 
-    
-    <button class="back-button" @click="goBack">Natrag</button>
+      <RouterLink to="/pet-profile">
+        <button type="button" class="nav-btn">🔙 Natrag</button>
+      </RouterLink>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
 
 const date = ref('')
 const time = ref('')
 const errorMessage = ref('')
-
-const router = useRouter()
+const successMessage = ref('')
+const formattedDate = ref('')
+const formattedTime = ref('')
 
 function submitAppointment() {
   if (!date.value || !time.value) {
-    errorMessage.value = 'Molimo unesite datum i vrijeme.'
-    return
+    successMessage.value = ''
+    errorMessage.value = 'Unesite datum i vrijeme!'
+    formattedDate.value = ''
+    formattedTime.value = ''
+  } else {
+    errorMessage.value = ''
+    successMessage.value = 'Termin je uspješno rezerviran!'
+
+    const dateObj = new Date(date.value)
+    formattedDate.value = new Intl.DateTimeFormat('hr-HR', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    }).format(dateObj)
+
+    formattedTime.value = time.value
+
+    date.value = ''
+    time.value = ''
   }
-
-  const selectedDateTime = new Date(`${date.value}T${time.value}`)
-  const now = new Date()
-
-  if (selectedDateTime <= now) {
-    errorMessage.value = 'Datum i vrijeme moraju biti u budućnosti.'
-    return
-  }
-
-  errorMessage.value = ''
-  alert(`Termin rezerviran za ${date.value} u ${time.value}`)
-}
-
-function goBack() {
-  router.back()
 }
 </script>
 
 <style scoped>
 .appointment-booking {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(to right, #e0f7fa, #fce4ec);
+}
+
+.content-box {
+  background-color: #ffffff;
+  padding: 40px 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
   text-align: center;
-  margin-top: 30px;
+}
+
+h2 {
+  color: #2c3e50;
+  margin-bottom: 25px;
 }
 
 input {
-  display: block;
-  margin: 10px auto;
-  padding: 8px;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
 }
 
-button {
-  margin-top: 15px;
-  padding: 10px 20px;
+.main-btn {
   background-color: #4caf50;
   color: white;
+  padding: 12px 24px;
   border: none;
+  border-radius: 12px;
   cursor: pointer;
+  width: 100%;
+  font-size: 16px;
+  margin-top: 10px;
 }
 
-button:hover {
+.main-btn:hover {
   background-color: #388e3c;
 }
 
-.back-button {
-  background-color: #ccc;
-  color: black;
-  margin-top: 10px;
+.nav-btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 15px;
 }
 
-.error {
+.nav-btn:hover {
+  background-color: #1976d2;
+}
+
+.error-message {
   color: red;
-  margin-top: 10px;
+  margin-top: 15px;
+}
+
+.success-message {
+  color: green;
+  margin-top: 15px;
+  font-weight: 500;
 }
 </style>

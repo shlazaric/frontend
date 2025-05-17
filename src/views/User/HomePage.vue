@@ -1,47 +1,63 @@
 <template>
-  <div class="home">
-    <h1>Dobrodošli!</h1>
+  <div class="home-page">
+    <div class="content-box">
+      <h1>Dobrodošao na početnu stranicu!</h1>
 
-    <div class="actions">
-      <router-link to="/pet-profile">
-        <button>Dodaj ljubimca</button>
-      </router-link>
+      <div class="button-group">
+        <RouterLink to="/pet-profile">
+          <button class="home-btn">➕ Dodaj ljubimca</button>
+        </RouterLink>
 
-      <router-link to="/book-appointment">
-        <button>Rezerviraj termin</button>
-      </router-link>
+        <RouterLink to="/book-appointment">
+          <button class="home-btn">📅 Rezerviraj termin</button>
+        </RouterLink>
+      </div>
     </div>
   </div>
 </template>
 
-<script setup>
-</script>
+
 
 <style scoped>
-.home {
-  text-align: center;
-  margin-top: 50px;
+.home-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(to right, #e0f7fa, #f1f8e9);
 }
 
-.actions {
+.content-box {
+  text-align: center;
+  background-color: #fff;
+  padding: 40px 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  color: #2c3e50;
+  margin-bottom: 30px;
+}
+
+.button-group {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  margin-top: 30px;
-  align-items: center;
+  gap: 15px;
 }
 
-button {
-  padding: 10px 20px;
+.home-btn {
+  padding: 12px 24px;
   font-size: 16px;
-  background-color: #3498db;
+  background-color: #4caf50;
   color: white;
   border: none;
+  border-radius: 12px;
   cursor: pointer;
-  border-radius: 8px;
+  transition: background-color 0.3s ease;
 }
 
-button:hover {
-  background-color: #2980b9;
+.home-btn:hover {
+  background-color: #388e3c;
 }
 </style>

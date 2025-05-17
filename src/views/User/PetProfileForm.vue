@@ -1,37 +1,44 @@
 <template>
-  <div>
-    <h2>Profil ljubimca</h2>
+  <div class="pet-profile">
+    <div class="content-box">
+      <h2>Profil ljubimca</h2>
 
-    <form @submit.prevent="submitPetProfile">
-      <input v-model="name" type="text" placeholder="Unesi ime ljubimca" />
-      <input v-model="species" type="text" placeholder="Unesi vrstu ljubimca" />
-      <input v-model="age" type="number" placeholder="Unesi starost ljubimca" />
+      <form @submit.prevent="submitPetProfile" class="form-group">
+        <input v-model="name" type="text" placeholder="Unesi ime ljubimca" />
+        <input v-model="species" type="text" placeholder="Unesi vrstu ljubimca" />
+        <input v-model="age" type="number" placeholder="Unesi starost ljubimca" />
 
-      <button type="submit">Spremi podatke o ljubimcu</button>
-    </form>
+        <button type="submit" class="main-btn">💾 Spremi podatke</button>
+      </form>
 
-    <p v-if="errorMessage" style="color: red;">{{ errorMessage }}</p>
-    <p v-if="successMessage" style="color: green;">{{ successMessage }}</p>
+      <p v-if="errorMessage" class="error-msg">{{ errorMessage }}</p>
+      <p v-if="successMessage" class="success-msg">{{ successMessage }}</p>
 
-    
-    <router-link to="/book-appointment">
-      <button>Rezerviraj termin kod veterinara</button>
-    </router-link>
+      <div class="navigation-buttons">
+        <router-link to="/edit-pet">
+          <button class="nav-btn">✏️ Uredi profil ljubimca</button>
+        </router-link>
 
-    <button class="back-button" @click="goHome">Natrag na početnu</button>
+        <router-link to="/book-appointment">
+          <button class="nav-btn">📅 Rezerviraj termin</button>
+        </router-link>
+
+        <router-link to="/home">
+          <button class="nav-btn">🏠 Natrag na početnu</button>
+        </router-link>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
 
 const name = ref('')
 const species = ref('')
 const age = ref('')
 const errorMessage = ref('')
 const successMessage = ref('')
-const router = useRouter()
 
 onMounted(() => {
   const savedProfile = JSON.parse(localStorage.getItem('petProfile'))
@@ -55,40 +62,89 @@ function submitPetProfile() {
   const petProfile = {
     name: name.value,
     species: species.value,
-    age: age.value
+    age: age.value,
   }
-  localStorage.setItem('petProfile', JSON.stringify(petProfile))
-}
 
-function goHome() {
-  router.push('/home')
+  localStorage.setItem('petProfile', JSON.stringify(petProfile))
 }
 </script>
 
 <style scoped>
-input {
-  display: block;
-  margin: 10px auto;
-  padding: 8px;
-  width: 80%;
+.pet-profile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(to right, #e1f5fe, #fce4ec);
 }
 
-button {
-  margin-top: 15px;
-  padding: 10px 20px;
+.content-box {
+  background-color: #fff;
+  padding: 40px 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+}
+
+h2 {
+  color: #2c3e50;
+  margin-bottom: 25px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+.main-btn {
   background-color: #4caf50;
   color: white;
+  padding: 12px 24px;
   border: none;
+  border-radius: 12px;
   cursor: pointer;
+  width: 100%;
+  font-size: 16px;
+  margin-top: 10px;
 }
 
-button:hover {
+.main-btn:hover {
   background-color: #388e3c;
 }
 
-.back-button {
-  margin-top: 15px;
-  background-color: #ccc;
-  color: black;
+.error-msg {
+  color: red;
+  margin-top: 10px;
+}
+
+.success-msg {
+  color: green;
+  margin-top: 10px;
+}
+
+.navigation-buttons {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.nav-btn {
+  padding: 10px 20px;
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.nav-btn:hover {
+  background-color: #1976d2;
 }
 </style>

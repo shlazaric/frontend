@@ -1,19 +1,28 @@
-<template> 
-  <div class="form-container">
-    <h2>Prijava korisnika</h2>
-    <form @submit.prevent="handleSubmit">
-      <label>Unesi e-mail:</label>
-      <input type="email" v-model="email" required />
+<template>
+  <div class="login-page">
+    <div class="form-box">
+      <h2>🔑 Prijava korisnika</h2>
 
-      <label>Unesi lozinku:</label>
-      <input type="password" v-model="password" required />
+      <form @submit.prevent="handleSubmit">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input id="email" v-model="email" type="email" placeholder="Unesite email" />
+          <span v-if="errors.email">{{ errors.email }}</span>
+        </div>
 
-      <button type="submit">Prijavi se</button>
-    </form>
-    
-    <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+        <div class="form-group">
+          <label for="password"> Lozinka </label>
+          <input id="password" v-model="password" type="password" placeholder="Unesite lozinku" />
+          <span v-if="errors.password">{{ errors.password }}</span>
+        </div>
 
-    <button class="back-button" @click="goBack">Natrag</button>
+        <button type="submit" class="submit-btn">Prijavi se</button>
+      </form>
+
+      <RouterLink to="/" class="back-link">
+        <button type="button">⟵ Natrag</button>
+      </RouterLink>
+    </div>
   </div>
 </template>
 
@@ -21,77 +30,126 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
-const email = ref('')
-const password = ref('')
-const errorMessage = ref('')
-
 const router = useRouter()
 
-function isValidEmail(emailStr) {
-  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  return re.test(emailStr)
+const email = ref('')
+const password = ref('')
+const errors = ref({})
+
+const validate = () => {
+  errors.value = {}
+
+  if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
+    errors.value.email = 'Unesite ispravan email.'
+  }
+
+  if (!password.value) {
+    errors.value.password = 'Unesite lozinku.'
+  }
+
+  return Object.keys(errors.value).length === 0
 }
 
-function handleSubmit() {
-  if (!email.value || !password.value) {
-    errorMessage.value = 'Molimo popunite sva polja.'
-    return
+const handleSubmit = () => {
+  if (validate()) {
+    alert('Korisnik uspješno prijavljen!')
+    router.push('/home')
   }
-
-  if (!isValidEmail(email.value)) {
-    errorMessage.value = 'Unesite ispravan e-mail.'
-    return
-  }
-
-  if (password.value.length < 6) {
-    errorMessage.value = 'Lozinka mora imati barem 6 znakova.'
-    return
-  }
-
-  errorMessage.value = ''
-  alert(`Prijava uspješna za ${email.value}`)
-
-  
-  router.push('/home')
-}
-
-function goBack() {
-  router.push('/')
 }
 </script>
 
 <style scoped>
-.form-container {
-  padding: 20px;
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(to right, #e0f2f1, #f3f9e3);
 }
+
+.form-box {
+  background-color: #ffffff;
+  padding: 40px 30px;
+  border-radius: 20px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+}
+
+h2 {
+  margin-bottom: 25px;
+  color: #2c3e50;
+  font-weight: bold;
+}
+
+.form-group {
+  margin-bottom: 18px;
+  text-align: left;
+}
+
 label {
   display: block;
-  margin-top: 10px;
-  color: #1d006b;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #2c3e50;
 }
+
 input {
   width: 100%;
-  padding: 5px;
-  box-sizing: border-box;
+  padding: 12px;
+  border: 1.5px solid #ddd;
+  border-radius: 12px;
+  transition: border-color 0.3s ease;
+  font-size: 16px;
 }
-button {
-  margin-top: 15px;
-  background-color: #3498db;
+
+input:focus {
+  border-color: #2ecc71;
+  outline: none;
+}
+
+span {
+  display: block;
+  color: #e74c3c;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #2ecc71;
   color: white;
-  padding: 8px 12px;
+  font-weight: bold;
   border: none;
+  border-radius: 12px;
   cursor: pointer;
-}
-button:hover {
-  background-color: #2980b9;
-}
-.back-button {
+  transition: background-color 0.3s ease;
   margin-top: 10px;
-  background-color: #ccc;
-  color: black;
 }
-.error {
-  color: red;
-  margin-top: 10px;
+
+.submit-btn:hover {
+  background-color: #27ae60;
+}
+
+.back-link {
+  display: block;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.back-link button {
+  background-color: #bdc3c7;
+  color: white;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.back-link button:hover {
+  background-color: #95a5a6;
 }
 </style>
