@@ -14,6 +14,7 @@ import EditPetProfile from '@/views/User/EditPetProfile.vue'
 import AdminLoginForm from '@/views/Admin/AdminLoginForm.vue'
 import AdminDashboard from '@/views/Admin/AdminDashboard.vue'
 import AppointmentList from '@/views/Admin/AppointmentList.vue'
+import PetsList from '@/views/Admin/PetsList.vue'
 
 const routes = [
   { path: '/', name: 'Welcome', component: WelcomePage },
@@ -25,7 +26,8 @@ const routes = [
   { path: '/admin-login', name: 'AdminLogin', component: AdminLoginForm },
   { path: '/edit-pet', name: 'EditPetProfile', component: EditPetProfile },
   { path: '/admin-dashboard', name: 'AdminDashboard', component: AdminDashboard },
-  { path: '/appointment-list', name: 'AppointmentList', component: AppointmentList }
+  { path: '/appointment-list', name: 'AppointmentList', component: AppointmentList },
+  { path: '/pets-list', name: 'PetsList', component: PetsList }
 ]
 
 const router = createRouter({
