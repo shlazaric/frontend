@@ -11,12 +11,16 @@
         </div>
 
         <div class="form-group">
-          <label for="password"> Lozinka </label>
+          <label for="password">Lozinka</label>
           <input id="password" v-model="password" type="password" placeholder="Unesite lozinku" />
           <span v-if="errors.password">{{ errors.password }}</span>
         </div>
 
-        <button type="submit" class="submit-btn">Prijavi se</button>
+        <span v-if="errors.general" class="error-message">{{ errors.general }}</span>
+
+        <button type="submit" class="submit-btn" :disabled="loading">
+          {{ loading ? 'Prijava...' : 'Prijavi se' }}
+        </button>
       </form>
 
       <RouterLink to="/" class="back-link">
@@ -29,12 +33,14 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import axios from 'axios'
 
 const router = useRouter()
 
 const email = ref('')
 const password = ref('')
 const errors = ref({})
+const loading = ref(false)
 
 const validate = () => {
   errors.value = {}
@@ -50,10 +56,34 @@ const validate = () => {
   return Object.keys(errors.value).length === 0
 }
 
-const handleSubmit = () => {
-  if (validate()) {
-    alert('Korisnik uspješno prijavljen!')
-    router.push('/home')
+const handleSubmit = async () => {
+  if (!validate()) return
+
+  loading.value = true
+  errors.value.general = ''
+
+  try {
+    const response = await axios.post('http://localhost:5000/api/login', {
+      email: email.value,
+      password: password.value,
+    })
+
+    const { token } = response.data
+
+    if (token) {
+      localStorage.setItem('token', token)
+      router.push('/home')
+    } else {
+      errors.value.general = 'Neispravni podaci za prijavu.'
+    }
+  } catch (err) {
+    if (err.response && err.response.data && err.response.data.message) {
+      errors.value.general = err.response.data.message
+    } else {
+      errors.value.general = 'Došlo je do greške prilikom prijave.'
+    }
+  } finally {
+    loading.value = false
   }
 }
 </script>
@@ -116,6 +146,13 @@ span {
   margin-top: 4px;
 }
 
+.error-message {
+  color: #e74c3c;
+  margin-bottom: 10px;
+  font-size: 14px;
+  text-align: center;
+}
+
 .submit-btn {
   width: 100%;
   padding: 12px;
@@ -129,7 +166,12 @@ span {
   margin-top: 10px;
 }
 
-.submit-btn:hover {
+.submit-btn:disabled {
+  background-color: #a3d9c7;
+  cursor: not-allowed;
+}
+
+.submit-btn:hover:not(:disabled) {
   background-color: #27ae60;
 }
 

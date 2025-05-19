@@ -30,7 +30,12 @@
 
         <div class="form-group">
           <label for="confirmPassword">Potvrdi lozinku</label>
-          <input id="confirmPassword" v-model="confirmPassword" type="password" placeholder="Ponovno unesite lozinku" />
+          <input
+            id="confirmPassword"
+            v-model="confirmPassword"
+            type="password"
+            placeholder="Ponovno unesite lozinku"
+          />
           <span v-if="errors.confirmPassword">{{ errors.confirmPassword }}</span>
         </div>
 
@@ -47,6 +52,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import axios from 'axios'
 
 const router = useRouter()
 
@@ -73,14 +79,31 @@ const validate = () => {
   return Object.keys(errors.value).length === 0
 }
 
-const handleSubmit = () => {
-  if (validate()) {
+const handleSubmit = async () => {
+  if (!validate()) return
+
+  try {
+    const response = await axios.post('http://localhost:5000/api/register', {
+      firstName: firstName.value,
+      lastName: lastName.value,
+      email: email.value,
+      password: password.value,
+    })
+
     alert('Registracija uspješna!')
-    router.push('/home')
+    router.push('/login')
+  } catch (err) {
+    if (err.response && err.response.data) {
+      const backendErrors = err.response.data.errors || {}
+      for (const key in backendErrors) {
+        errors.value[key] = backendErrors[key][0] || backendErrors[key]
+      }
+    } else {
+      alert('Greška pri spajanju s poslužiteljem.')
+    }
   }
 }
 </script>
-
 <style scoped>
 .register-page {
   display: flex;
