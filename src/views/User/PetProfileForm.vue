@@ -33,6 +33,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import axios from 'axios'
 
 const name = ref('')
 const species = ref('')
@@ -40,24 +41,28 @@ const age = ref('')
 const errorMessage = ref('')
 const successMessage = ref('')
 
-onMounted(() => {
-  const savedProfile = JSON.parse(localStorage.getItem('petProfile'))
-  if (savedProfile) {
-    name.value = savedProfile.name
-    species.value = savedProfile.species
-    age.value = savedProfile.age
+const API_URL = 'http://localhost:5000/api/pets' 
+
+
+onMounted(async () => {
+  try {
+    const response = await axios.get(API_URL)
+    if (response.data) {
+      name.value = response.data.name || ''
+      species.value = response.data.species || ''
+      age.value = response.data.age || ''
+    }
+  } catch (error) {
+    console.error('Greška pri dohvaćanju profila:', error)
   }
 })
 
-function submitPetProfile() {
+async function submitPetProfile() {
   if (!name.value || !species.value || !age.value) {
     successMessage.value = ''
     errorMessage.value = 'Molimo popunite sva polja!'
     return
   }
-
-  errorMessage.value = ''
-  successMessage.value = 'Podaci su uspješno sačuvani!'
 
   const petProfile = {
     name: name.value,
@@ -65,7 +70,15 @@ function submitPetProfile() {
     age: age.value,
   }
 
-  localStorage.setItem('petProfile', JSON.stringify(petProfile))
+  try {
+    await axios.post(API_URL, petProfile)
+    errorMessage.value = ''
+    successMessage.value = 'Podaci su uspješno poslani!'
+  } catch (error) {
+    console.error('Greška pri slanju profila:', error)
+    successMessage.value = ''
+    errorMessage.value = 'Dogodila se greška pri slanju podataka.'
+  }
 }
 </script>
 

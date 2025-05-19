@@ -83,7 +83,7 @@ const handleSubmit = async () => {
   if (!validate()) return
 
   try {
-    const response = await axios.post('http://localhost:5000/api/register', {
+    const response = await axios.post('http://localhost:5000/api/auth/register', {
       firstName: firstName.value,
       lastName: lastName.value,
       email: email.value,
@@ -93,17 +93,15 @@ const handleSubmit = async () => {
     alert('Registracija uspješna!')
     router.push('/login')
   } catch (err) {
-    if (err.response && err.response.data) {
-      const backendErrors = err.response.data.errors || {}
-      for (const key in backendErrors) {
-        errors.value[key] = backendErrors[key][0] || backendErrors[key]
-      }
+    if (err.response && err.response.data && err.response.data.message) {
+      alert(err.response.data.message)
     } else {
       alert('Greška pri spajanju s poslužiteljem.')
     }
   }
 }
 </script>
+
 <style scoped>
 .register-page {
   display: flex;
