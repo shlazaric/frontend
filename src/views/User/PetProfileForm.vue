@@ -6,9 +6,9 @@
       <form @submit.prevent="submitPetProfile" class="form-group">
         <input v-model="name" type="text" placeholder="Unesi ime ljubimca" />
         <input v-model="species" type="text" placeholder="Unesi vrstu ljubimca" />
-        <input v-model="age" type="number" placeholder="Unesi starost ljubimca" />
+        <input v-model.number="age" type="number" placeholder="Unesi starost ljubimca" />
 
-        <button type="submit" class="main-btn">💾 Spremi podatke</button>
+        <button type="submit" class="main-btn"> Spremi podatke</button>
       </form>
 
       <p v-if="errorMessage" class="error-msg">{{ errorMessage }}</p>
@@ -16,15 +16,16 @@
 
       <div class="navigation-buttons">
         <router-link to="/edit-pet">
-          <button class="nav-btn">✏️ Uredi profil ljubimca</button>
+          <button class="nav-btn"> Uredi profil ljubimca</button>
         </router-link>
 
+      
         <router-link to="/book-appointment">
-          <button class="nav-btn">📅 Rezerviraj termin</button>
+          <button class="nav-btn"> Rezerviraj termin</button>
         </router-link>
 
         <router-link to="/home">
-          <button class="nav-btn">🏠 Natrag na početnu</button>
+          <button class="nav-btn"> Natrag na početnu</button>
         </router-link>
       </div>
     </div>
@@ -32,52 +33,51 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import axios from 'axios'
 
 const name = ref('')
 const species = ref('')
-const age = ref('')
+const age = ref(null)
 const errorMessage = ref('')
 const successMessage = ref('')
 
-const API_URL = 'http://localhost:5000/api/pets' 
+const API_URL = 'http://localhost:5000/api/pets'
+const token = localStorage.getItem('token')
 
-
-onMounted(async () => {
-  try {
-    const response = await axios.get(API_URL)
-    if (response.data) {
-      name.value = response.data.name || ''
-      species.value = response.data.species || ''
-      age.value = response.data.age || ''
-    }
-  } catch (error) {
-    console.error('Greška pri dohvaćanju profila:', error)
-  }
-})
+if (!token) {
+  errorMessage.value = 'Niste prijavljeni. Nema tokena.'
+}
 
 async function submitPetProfile() {
-  if (!name.value || !species.value || !age.value) {
-    successMessage.value = ''
+  if (!name.value || !species.value || age.value === null || age.value === '') {
     errorMessage.value = 'Molimo popunite sva polja!'
+    successMessage.value = ''
     return
   }
 
-  const petProfile = {
-    name: name.value,
-    species: species.value,
-    age: age.value,
-  }
-
+  errorMessage.value = ''
   try {
-    await axios.post(API_URL, petProfile)
-    errorMessage.value = ''
-    successMessage.value = 'Podaci su uspješno poslani!'
+    await axios.post(API_URL, {
+      name: name.value,
+      species: species.value,
+      age: age.value,
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    successMessage.value = 'Podaci su uspješno spremljeni!'
   } catch (error) {
-    console.error('Greška pri slanju profila:', error)
+    console.error('Greška pri slanju profila:', error.response || error.message || error)
     successMessage.value = ''
-    errorMessage.value = 'Dogodila se greška pri slanju podataka.'
+    if (error.response && error.response.data && error.response.data.message) {
+      errorMessage.value = 'Greška: ' + error.response.data.message
+    } else if (error.message) {
+      errorMessage.value = 'Greška: ' + error.message
+    } else {
+      errorMessage.value = 'Dogodila se greška pri slanju podataka.'
+    }
   }
 }
 </script>

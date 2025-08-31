@@ -3,15 +3,18 @@
     <div class="pets-box">
       <h2>🐾 Pregled ljubimaca</h2>
 
-    
-      <div v-for="pet in pets" :key="pet.id" class="pet-card">
-        <h3>{{ pet.name }}</h3>
-        <p><strong>Vrsta:</strong> {{ pet.species }}</p>
-        <p><strong>Starost:</strong> {{ pet.age }} godina</p>
-        <p><strong>Dokumentacija:</strong> {{ pet.documents }}</p>
-      </div>
+      <div v-if="errorMessage" class="error-msg">{{ errorMessage }}</div>
 
-    
+      <div v-if="pets.length">
+        <div v-for="pet in pets" :key="pet._id" class="pet-card">
+          <h3>{{ pet.name }}</h3>
+          <p><strong>Vrsta:</strong> {{ pet.species }}</p>
+          <p><strong>Starost:</strong> {{ pet.age }} godina</p>
+          <p v-if="pet.documents"><strong>Dokumentacija:</strong> {{ pet.documents }}</p>
+        </div>
+      </div>
+      <p v-else>Nema unesenih ljubimaca.</p>
+
       <RouterLink to="/admin-dashboard" class="back-button">
         <button type="button">⬅ Natrag</button>
       </RouterLink>
@@ -20,14 +23,28 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { RouterLink } from 'vue-router'  
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
 
-// Dummy podaci za ljubimce
-const pets = ref([
-  { id: 1, name: 'Max', species: 'Pas', age: 3, documents: 'Cijepljen, čipiran' },
-  { id: 2, name: 'Bella', species: 'Mačka', age: 2, documents: 'Sterilizirana, čipirana' },
-])
+const pets = ref([])
+const errorMessage = ref('')
+
+const API_URL = 'http://localhost:5000/api/pets'
+const token = localStorage.getItem('token')
+
+onMounted(async () => {
+  try {
+    const response = await axios.get(API_URL, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+    pets.value = response.data
+  } catch (error) {
+    console.error('Greška pri dohvaćanju podataka o ljubimcima:', error)
+    errorMessage.value = 'Greška pri dohvaćanju podataka o ljubimcima.'
+  }
+})
 </script>
 
 <style scoped>
@@ -86,5 +103,11 @@ h2 {
 
 .back-button button:hover {
   background-color: #2980b9;
+}
+
+.error-msg {
+  color: red;
+  margin-bottom: 20px;
+  text-align: center;
 }
 </style>

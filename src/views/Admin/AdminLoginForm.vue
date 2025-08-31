@@ -16,6 +16,8 @@
           <span v-if="errors.password">{{ errors.password }}</span>
         </div>
 
+        <p v-if="errors.general" class="error-msg">{{ errors.general }}</p>
+
         <button type="submit" class="main-btn">Prijavi se kao admin</button>
       </form>
 
@@ -50,9 +52,13 @@ const validate = () => {
 }
 
 const handleSubmit = () => {
-  if (validate()) {
-    alert('Administrator uspješno prijavljen!')
+  if (!validate()) return
+
+  // Provjera točnog admin računa
+  if (email.value === 'anaanic@gmail.com' && password.value === 'anica17') {
     router.push('/admin-dashboard')
+  } else {
+    errors.value.general = 'Neispravni podaci za prijavu.'
   }
 }
 </script>
@@ -105,6 +111,13 @@ span {
   font-size: 0.85em;
   margin-top: 4px;
   display: block;
+}
+
+.error-msg {
+  color: red;
+  margin-top: 10px;
+  font-size: 14px;
+  text-align: center;
 }
 
 .main-btn {

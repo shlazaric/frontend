@@ -3,7 +3,7 @@
     <div class="welcome-box">
       <img src="@/assets/vet.png" alt="VetDoc Logo" class="logo" />
 
-      <h1>Dobrodošli u <span class="highlight">VetDoc</span>! 🐾</h1>
+      <h1>Dobrodošli u <span class="highlight">VetDoc</span>! </h1>
 
       <p class="subtitle">Briga o vašim ljubimcima na jednom mjestu</p>
 
